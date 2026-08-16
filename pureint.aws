@@ -28,6 +28,9 @@ set #Output.Number to 0;
 announce #Input.Resolution;
 set #Input.Resolution to 6;
 
+announce #MetaInput;
+set #MetaInput to false;
+
 ? Input format is x operand y, without spaces so like 40+10, Resolution is the amount of bits;
 
 ? SAdd2 (simple adder 2) function uses HARDCODED 6-bit integers, as we must start with hardcoding.
@@ -99,11 +102,13 @@ construct SAdd2;
 > run CleanupTemp;
 > dismount;
 
+
+
 ? 7-bit adder built for iteration and the such with a max sum of 127;
 
 mount Awsta.PureInt;
-new @Function SAdd7;
-construct SAdd7;
+new @Function SAdd8;
+construct SAdd8;
 > mount Awsta.PureInt;
 > new @Locker Awsta.PureInt.Temp;
 > announce #FirstBin in Awsta.PureInt.Temp;
@@ -440,4 +445,1033 @@ construct SAdd7;
 > dismount;
 
 
-dismount;
+mount Awsta.PureInt;
+new @Function SSub8;
+construct SSub8;
+> mount Awsta.PureInt;
+> new @Locker Awsta.PureInt.Temp;
+> announce #FirstBin in Awsta.PureInt.Temp;
+> announce #SecondBin in Awsta.PureInt.Temp;
+> announce #A0 in Awsta.PureInt.Temp;
+> announce #A1 in Awsta.PureInt.Temp;
+> announce #A2 in Awsta.PureInt.Temp;
+> announce #A3 in Awsta.PureInt.Temp;
+> announce #A4 in Awsta.PureInt.Temp;
+> announce #A5 in Awsta.PureInt.Temp;
+> announce #A6 in Awsta.PureInt.Temp;
+> announce #B0 in Awsta.PureInt.Temp;
+> announce #B1 in Awsta.PureInt.Temp;
+> announce #B2 in Awsta.PureInt.Temp;
+> announce #B3 in Awsta.PureInt.Temp;
+> announce #B4 in Awsta.PureInt.Temp;
+> announce #B5 in Awsta.PureInt.Temp;
+> announce #B6 in Awsta.PureInt.Temp;
+> announce #TotalBinarySum in Awsta.PureInt.Temp;
+> announce #Carry0 in Awsta.PureInt.Temp;
+> announce #Carry1 in Awsta.PureInt.Temp;
+> announce #Carry2 in Awsta.PureInt.Temp;
+> announce #Carry3 in Awsta.PureInt.Temp;
+> announce #Carry4 in Awsta.PureInt.Temp;
+> announce #Carry5 in Awsta.PureInt.Temp;
+> announce #Carry6 in Awsta.PureInt.Temp;
+> announce #CarryAB in Awsta.PureInt.Temp;
+> announce #CarryTemp in Awsta.PureInt.Temp;
+> announce #Temp in Awsta.PureInt.Temp;
+
+> basetwo #Input.Number1 to #FirstBin@Awsta.PureInt.Temp resolution 7;
+> basetwo #Input.Number2 to #SecondBin@Awsta.PureInt.Temp resolution 7;
+
+> slice #FirstBin@Awsta.PureInt.Temp at 7 to #A0@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 6 to #A1@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 5 to #A2@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 4 to #A3@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 3 to #A4@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 2 to #A5@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 1 to #A6@Awsta.PureInt.Temp;
+
+> slice #SecondBin@Awsta.PureInt.Temp at 7 to #B0@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 6 to #B1@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 5 to #B2@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 4 to #B3@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 3 to #B4@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 2 to #B5@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 1 to #B6@Awsta.PureInt.Temp;
+
+? Bit 0;
+
+> set #Input.A in Awsta.Logic to #B0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #TotalBinarySum in Awsta.PureInt.Temp to 1;
+> \ set #TotalBinarySum in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry0 in Awsta.PureInt.Temp to 1;
+> \ set #Carry0 in Awsta.PureInt.Temp to 0;
+
+? Bit 1;
+
+> set #Input.A in Awsta.Logic to #B1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry0@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry0@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry1 in Awsta.PureInt.Temp to 1;
+> \ set #Carry1 in Awsta.PureInt.Temp to 0;
+
+? Bit 2;
+
+> set #Input.A in Awsta.Logic to #B2@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A2@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry1@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A2@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry1@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry2 in Awsta.PureInt.Temp to 1;
+> \ set #Carry2 in Awsta.PureInt.Temp to 0;
+
+? Bit 3;
+
+> set #Input.A in Awsta.Logic to #B3@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A3@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry2@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A3@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry2@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry3 in Awsta.PureInt.Temp to 1;
+> \ set #Carry3 in Awsta.PureInt.Temp to 0;
+
+? Bit 4;
+
+> set #Input.A in Awsta.Logic to #B4@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A4@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry3@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A4@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry3@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry4 in Awsta.PureInt.Temp to 1;
+> \ set #Carry4 in Awsta.PureInt.Temp to 0;
+
+? Bit 5;
+
+> set #Input.A in Awsta.Logic to #B5@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A5@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry4@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A5@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry4@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry5 in Awsta.PureInt.Temp to 1;
+> \ set #Carry5 in Awsta.PureInt.Temp to 0;
+
+? Bit 6;
+
+> set #Input.A in Awsta.Logic to #B6@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A6@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry5@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A6@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry5@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry6 in Awsta.PureInt.Temp to 1;
+> \ set #Carry6 in Awsta.PureInt.Temp to 0;
+
+> baseten #TotalBinarySum@Awsta.PureInt.Temp to #Output.Number;
+
+> run CleanupTemp;
+> dismount;
+
+
+? New set of 13-bit operators. ====================;
+
+
+mount Awsta.PureInt;
+new @Function SSub13;
+construct SSub13;
+> mount Awsta.PureInt;
+> new @Locker Awsta.PureInt.Temp;
+> announce #FirstBin in Awsta.PureInt.Temp;
+> announce #SecondBin in Awsta.PureInt.Temp;
+> announce #A0 in Awsta.PureInt.Temp;
+> announce #A1 in Awsta.PureInt.Temp;
+> announce #A2 in Awsta.PureInt.Temp;
+> announce #A3 in Awsta.PureInt.Temp;
+> announce #A4 in Awsta.PureInt.Temp;
+> announce #A5 in Awsta.PureInt.Temp;
+> announce #A6 in Awsta.PureInt.Temp;
+> announce #B0 in Awsta.PureInt.Temp;
+> announce #B1 in Awsta.PureInt.Temp;
+> announce #B2 in Awsta.PureInt.Temp;
+> announce #B3 in Awsta.PureInt.Temp;
+> announce #B4 in Awsta.PureInt.Temp;
+> announce #B5 in Awsta.PureInt.Temp;
+> announce #B6 in Awsta.PureInt.Temp;
+> announce #A7 in Awsta.PureInt.Temp;
+> announce #A8 in Awsta.PureInt.Temp;
+> announce #A9 in Awsta.PureInt.Temp;
+> announce #A10 in Awsta.PureInt.Temp;
+> announce #A11 in Awsta.PureInt.Temp;
+> announce #A12 in Awsta.PureInt.Temp;
+> announce #A13 in Awsta.PureInt.Temp;
+> announce #B7 in Awsta.PureInt.Temp;
+> announce #B8 in Awsta.PureInt.Temp;
+> announce #B9 in Awsta.PureInt.Temp;
+> announce #B10 in Awsta.PureInt.Temp;
+> announce #B11 in Awsta.PureInt.Temp;
+> announce #B12 in Awsta.PureInt.Temp;
+> announce #B13 in Awsta.PureInt.Temp;
+> announce #TotalBinarySum in Awsta.PureInt.Temp;
+> announce #Carry0 in Awsta.PureInt.Temp;
+> announce #Carry1 in Awsta.PureInt.Temp;
+> announce #Carry2 in Awsta.PureInt.Temp;
+> announce #Carry3 in Awsta.PureInt.Temp;
+> announce #Carry4 in Awsta.PureInt.Temp;
+> announce #Carry5 in Awsta.PureInt.Temp;
+> announce #Carry6 in Awsta.PureInt.Temp;
+> announce #Carry7 in Awsta.PureInt.Temp;
+> announce #Carry8 in Awsta.PureInt.Temp;
+> announce #Carry9 in Awsta.PureInt.Temp;
+> announce #Carry10 in Awsta.PureInt.Temp;
+> announce #Carry11 in Awsta.PureInt.Temp;
+> announce #Carry12 in Awsta.PureInt.Temp;
+> announce #Carry13 in Awsta.PureInt.Temp;
+> announce #CarryAB in Awsta.PureInt.Temp;
+> announce #CarryTemp in Awsta.PureInt.Temp;
+> announce #Temp in Awsta.PureInt.Temp;
+
+> basetwo #Input.Number1 to #FirstBin@Awsta.PureInt.Temp resolution 13;
+> basetwo #Input.Number2 to #SecondBin@Awsta.PureInt.Temp resolution 13;
+
+> slice #FirstBin@Awsta.PureInt.Temp at 13 to #A0@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 12 to #A1@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 11 to #A2@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 10 to #A3@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 9 to #A4@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 8 to #A5@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 7 to #A6@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 6 to #A7@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 5 to #A8@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 4 to #A9@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 3 to #A10@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 2 to #A11@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 1 to #A12@Awsta.PureInt.Temp;
+
+> slice #SecondBin@Awsta.PureInt.Temp at 13 to #B0@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 12 to #B1@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 11 to #B2@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 10 to #B3@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 9 to #B4@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 8 to #B5@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 7 to #B6@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 6 to #B7@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 5 to #B8@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 4 to #B9@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 3 to #B10@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 2 to #B11@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 1 to #B12@Awsta.PureInt.Temp;
+
+? Bit 0;
+
+> set #Input.A in Awsta.Logic to #B0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #TotalBinarySum in Awsta.PureInt.Temp to 1;
+> \ set #TotalBinarySum in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry0 in Awsta.PureInt.Temp to 1;
+> \ set #Carry0 in Awsta.PureInt.Temp to 0;
+
+? Bit 1;
+
+> set #Input.A in Awsta.Logic to #B1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry0@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry0@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry1 in Awsta.PureInt.Temp to 1;
+> \ set #Carry1 in Awsta.PureInt.Temp to 0;
+
+? Bit 2;
+
+> set #Input.A in Awsta.Logic to #B2@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A2@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry1@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A2@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry1@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry2 in Awsta.PureInt.Temp to 1;
+> \ set #Carry2 in Awsta.PureInt.Temp to 0;
+
+? Bit 3;
+
+> set #Input.A in Awsta.Logic to #B3@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A3@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry2@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A3@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry2@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry3 in Awsta.PureInt.Temp to 1;
+> \ set #Carry3 in Awsta.PureInt.Temp to 0;
+
+? Bit 4;
+
+> set #Input.A in Awsta.Logic to #B4@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A4@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry3@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A4@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry3@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry4 in Awsta.PureInt.Temp to 1;
+> \ set #Carry4 in Awsta.PureInt.Temp to 0;
+
+? Bit 5;
+
+> set #Input.A in Awsta.Logic to #B5@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A5@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry4@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A5@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry4@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry5 in Awsta.PureInt.Temp to 1;
+> \ set #Carry5 in Awsta.PureInt.Temp to 0;
+
+? Bit 6;
+
+> set #Input.A in Awsta.Logic to #B6@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A6@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry5@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A6@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry5@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry6 in Awsta.PureInt.Temp to 1;
+> \ set #Carry6 in Awsta.PureInt.Temp to 0;
+
+? Bit 7;
+
+> set #Input.A in Awsta.Logic to #B7@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A7@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry6@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A7@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry6@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry7 in Awsta.PureInt.Temp to 1;
+> \ set #Carry7 in Awsta.PureInt.Temp to 0;
+
+? Bit 8;
+
+> set #Input.A in Awsta.Logic to #B8@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A8@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry7@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A8@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry7@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry8 in Awsta.PureInt.Temp to 1;
+> \ set #Carry8 in Awsta.PureInt.Temp to 0;
+
+? Bit 9;
+
+> set #Input.A in Awsta.Logic to #B9@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A9@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry8@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A9@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry8@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry9 in Awsta.PureInt.Temp to 1;
+> \ set #Carry9 in Awsta.PureInt.Temp to 0;
+
+? Bit 10;
+
+> set #Input.A in Awsta.Logic to #B10@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A10@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry9@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A10@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry9@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry10 in Awsta.PureInt.Temp to 1;
+> \ set #Carry10 in Awsta.PureInt.Temp to 0;
+
+? Bit 11;
+
+> set #Input.A in Awsta.Logic to #B11@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A11@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry10@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A11@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry10@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry11 in Awsta.PureInt.Temp to 1;
+> \ set #Carry11 in Awsta.PureInt.Temp to 0;
+
+? Bit 12;
+
+> set #Input.A in Awsta.Logic to #B12@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to 1;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A12@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryTemp in Awsta.PureInt.Temp to 1;
+> \ set #CarryTemp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry11@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> set #Input.A in Awsta.Logic to #A12@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #CarryAB in Awsta.PureInt.Temp to 1;
+> \ set #CarryAB in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryTemp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry11@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #CarryAB@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> run OR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry12 in Awsta.PureInt.Temp to 1;
+> \ set #Carry12 in Awsta.PureInt.Temp to 0;
+
+> baseten #TotalBinarySum@Awsta.PureInt.Temp to #Output.Number;
+
+> run CleanupTemp;
+> dismount;
