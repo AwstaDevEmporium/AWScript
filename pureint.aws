@@ -107,8 +107,8 @@ construct SAdd2;
 ? 7-bit adder built for iteration and the such with a max sum of 127;
 
 mount Awsta.PureInt;
-new @Function SAdd8;
-construct SAdd8;
+new @Function SAdd7;
+construct SAdd7;
 > mount Awsta.PureInt;
 > new @Locker Awsta.PureInt.Temp;
 > announce #FirstBin in Awsta.PureInt.Temp;
@@ -446,8 +446,8 @@ construct SAdd8;
 
 
 mount Awsta.PureInt;
-new @Function SSub8;
-construct SSub8;
+new @Function SSub7;
+construct SSub7;
 > mount Awsta.PureInt;
 > new @Locker Awsta.PureInt.Temp;
 > announce #FirstBin in Awsta.PureInt.Temp;
