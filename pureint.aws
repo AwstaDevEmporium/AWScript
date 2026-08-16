@@ -1,4 +1,4 @@
-? W.I.P;
+? WIP;
 ? Made by the head dev of Awsta's Dev Emporium/ head dev of AWScript
 (this language btw!)
 
@@ -30,21 +30,19 @@ set #Output.Number to 0;
 announce #Input.Resolution;
 set #Input.Resolution to 6;
 
-dismount;
-
 ? Input format is x operand y, without spaces so like 40+10, Resolution is the amount of bits;
 
 ? SAdd2 (simple adder 2) function uses HARDCODED 6-bit integers, as we must start with hardcoding.
 Why? Well we cannot iterate through a loop before we can add or substract
 
 mount Awsta.PureInt;
-
 new @Function CleanupTemp;
 construct CleanupTemp;
 > disavow @Locker Awsta.PureInt.Temp;
 
 new @Function SAdd2;
 construct SAdd2;
+> mount Awsta.PureInt;
 > new @Locker Awsta.PureInt.Temp;
 > announce #FirstBin in Awsta.PureInt.Temp;
 > announce #SecondBin in Awsta.PureInt.Temp;
@@ -101,5 +99,6 @@ construct SAdd2;
 > baseten #TotalBinarySum@Awsta.PureInt.Temp to #Output.Number;
 
 > run CleanupTemp;
+> dismount;
 
 dismount;
