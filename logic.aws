@@ -1,5 +1,5 @@
 ? This is the AWScript-pure implementation of low level logic.
-This is used extensively by math modules;
+This is used extensively by puremath modules;
 
 new @Locker Awsta.Logic;
 mount Awsta.Logic;
