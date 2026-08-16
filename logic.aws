@@ -1,0 +1,50 @@
+? This is the AWScript-pure implementation of low level logic.
+This is used extensively by math modules;
+
+new @Locker Awsta.Logic;
+mount Awsta.Logic;
+
+announce #Input.A;
+set #Input.A to 0;
+
+announce #Input.B;
+set #Input.B to 0;
+
+announce #Output.Result;
+set #Output.Result to 0;
+
+new @Function XOR;
+construct XOR;
+> perchance #Input.A@Awsta.Logic is #Input.B@Awsta.Logic;
+> / set #Output.Result in Awsta.Logic to 0;
+> \ set #Output.Result in Awsta.Logic to 1;
+
+new @Function AND;
+construct AND;
+> perchance #Input.A@Awsta.Logic is 1;
+> / perchance #Input.B@Awsta.Logic is 1;
+> \ set #Output.Result in Awsta.Logic to 0;
+> / set #Output.Result in Awsta.Logic to 1;
+
+new @Function NAND;
+construct NAND;
+> perchance #Input.A@Awsta.Logic is 1;
+> / perchance #Input.B@Awsta.Logic is 1;
+> / set #Output.Result in Awsta.Logic to 0;
+> \ set #Output.Result in Awsta.Logic to 1;
+
+new @Function OR;
+construct OR;
+> perchance #Input.A@Awsta.Logic is 1;
+> \ perchance #Input.B@Awsta.Logic is 1;
+> \ set #Output.Result in Awsta.Logic to 0;
+> / set #Output.Result in Awsta.Logic to 1;
+
+new @Function NOR;
+construct NOR;
+> perchance #Input.A@Awsta.Logic is 1;
+> \ perchance #Input.B@Awsta.Logic is 1;
+> / set #Output.Result in Awsta.Logic to 0;
+> \ set #Output.Result in Awsta.Logic to 1;
+
+dismount;
