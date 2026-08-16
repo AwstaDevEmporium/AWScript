@@ -1,0 +1,105 @@
+? W.I.P;
+? Made by the head dev of Awsta's Dev Emporium/ head dev of AWScript
+(this language btw!)
+
+This PureInt module implements math purely in AWScript, which doesn't come with math defaults.
+This should probably not be used for big projects if _ functions are exposed by your dialect of AWScript. 
+
+This uses periods to help organize in the names of @Lockers, these serve ZERO syntactic purpose.
+
+Requires Awsta.Logic, import prior to this;
+
+new @Locker Awsta.PureInt;
+mount Awsta.PureInt;
+
+announce #DiagnosticMode;
+set #DiagnosticMode to false;
+
+announce #Input.Number1;
+set #Input.Number1 to 0;
+
+announce #Input.Number2;
+set #Input.Number2 to 0;
+
+announce #Input.Operand;
+set #Input.Operand to 0;
+
+announce #Output.Number;
+set #Output.Number to 0;
+
+announce #Input.Resolution;
+set #Input.Resolution to 6;
+
+dismount;
+
+? Input format is x operand y, without spaces so like 40+10, Resolution is the amount of bits;
+
+? SAdd2 (simple adder 2) function uses HARDCODED 6-bit integers, as we must start with hardcoding.
+Why? Well we cannot iterate through a loop before we can add or substract
+
+mount Awsta.PureInt;
+
+new @Function CleanupTemp;
+construct CleanupTemp;
+> disavow @Locker Awsta.PureInt.Temp;
+
+new @Function SAdd2;
+construct SAdd2;
+> new @Locker Awsta.PureInt.Temp;
+> announce #FirstBin in Awsta.PureInt.Temp;
+> announce #SecondBin in Awsta.PureInt.Temp;
+> announce #A0 in Awsta.PureInt.Temp;
+> announce #A1 in Awsta.PureInt.Temp;
+> announce #B0 in Awsta.PureInt.Temp;
+> announce #B1 in Awsta.PureInt.Temp;
+> announce #TotalBinarySum in Awsta.PureInt.Temp;
+> announce #Carry0 in Awsta.PureInt.Temp;
+> announce #Temp in Awsta.PureInt.Temp;
+
+> basetwo #Input.Number1 to #FirstBin@Awsta.PureInt.Temp resolution 2;
+> basetwo #Input.Number2 to #SecondBin@Awsta.PureInt.Temp resolution 2;
+
+> slice #FirstBin@Awsta.PureInt.Temp at 2 to #A0@Awsta.PureInt.Temp;
+> slice #FirstBin@Awsta.PureInt.Temp at 1 to #A1@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 2 to #B0@Awsta.PureInt.Temp;
+> slice #SecondBin@Awsta.PureInt.Temp at 1 to #B1@Awsta.PureInt.Temp;
+
+? Bit 0;
+
+> set #Input.A in Awsta.Logic to #A0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #B0@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #TotalBinarySum in Awsta.PureInt.Temp to 1;
+> \ set #TotalBinarySum in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #A0@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #B0@Awsta.PureInt.Temp;
+> run AND in Awsta.Logic;
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Carry0 in Awsta.PureInt.Temp to 1;
+> \ set #Carry0 in Awsta.PureInt.Temp to 0;
+
+? Bit 1;
+
+> set #Input.A in Awsta.Logic to #A1@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #B1@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+
+> perchance #Output.Result@Awsta.Logic is 1;
+> / set #Temp in Awsta.PureInt.Temp to 1;
+> \ set #Temp in Awsta.PureInt.Temp to 0;
+
+> set #Input.A in Awsta.Logic to #Temp@Awsta.PureInt.Temp;
+> set #Input.B in Awsta.Logic to #Carry0@Awsta.PureInt.Temp;
+> run XOR in Awsta.Logic;
+
+> perchance #Output.Result@Awsta.Logic is 1;
+> / concat 1 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+> \ concat 0 with #TotalBinarySum@Awsta.PureInt.Temp to #TotalBinarySum@Awsta.PureInt.Temp;
+
+> baseten #TotalBinarySum@Awsta.PureInt.Temp to #Output.Number;
+
+> run CleanupTemp;
+
+dismount;
