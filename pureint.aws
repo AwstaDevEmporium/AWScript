@@ -2,6 +2,12 @@
 
 This PureInt module implements math purely in AWScript, which doesn't come with math defaults.
 This should probably not be used for big projects if _ functions are exposed by your dialect of AWScript. 
+It is planned to be implemented directly into AWScript's interpreter with shortcuts to interact with its functions.
+Feel free to fork it! - Awsta, Head o' Awsta's Dev Emporium
+
+! W.I.P. !
+Floats/decimals will not be added. Later a command will be added to basic AWScript in C# for 'insert'ing 
+a char in a string. Please use this to set decimals in numbers after using PureInt to calculate.
 
 This uses periods to help organize in the names of @Lockers, these serve ZERO syntactic purpose.
 
@@ -33,8 +39,9 @@ set #MetaInput to false;
 
 ? Input format is x operand y, without spaces so like 40+10, Resolution is the amount of bits;
 
-? SAdd2 (simple adder 2) function uses HARDCODED 6-bit integers, as we must start with hardcoding.
-Why? Well we cannot iterate through a loop before we can add or substract
+? SAdd2 (simple adder 2) function uses HARDCODED 2-bit integers, as we must start with hardcoding.
+Why? Well we cannot iterate through a loop before we can add or substract. ofc the successors, being
+yknow, the excellent and awstounding SAdd7 and SAdd13;
 
 mount Awsta.PureInt;
 new @Function CleanupTemp;
@@ -1475,3 +1482,5 @@ construct SSub13;
 
 > run CleanupTemp;
 > dismount;
+
+dismount;
