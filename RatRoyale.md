@@ -11,8 +11,6 @@ AWScript's primary implementation is into Rat Royale.
 
 ## Primary _ Functions
 
-```ConsoleLog``` - Logs to Unity's console, not really useful except for devs
-
 ```ConnectToPlayerJoin``` - First argument is function name, second is it's locker name. Connects the function to player join events
 
 ```ConnectToPlayerLeave``` - First argument is function name, second is it's locker name. Connects the function to player leave events
@@ -24,6 +22,12 @@ AWScript's primary implementation is into Rat Royale.
 ```Log``` - All arguments are converted into strings, variables are read, spaces are inserted between arguments, and its all appended to log file.
 
 ```LogVerbatim``` - Same as log, but doesn't read variable values automatically
+
+```ConsoleLog``` - Logs to Unity's console, not really useful except for devs
+
+```LockerFromJSON``` - Takes two inputs, a name of the Locker (existing or not) that will be set, and then the file location
+
+```LockerToJSON``` - Takes two inputs, a name of the Locker (existing or not) that will be converted, and then the file location
 
 ```Add``` - First argument is the output variable, all other arguments are numbers to be added
 
