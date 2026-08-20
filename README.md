@@ -69,4 +69,4 @@ And finally one of the most important, the anchor destroyer:
 ```disavow @Anchor anchorName;```
 
 # The Future
-AWScript+ is a possible planned superset over AWScript, including the ability to pass arguments into functions and the ability to embed other instructions within instructions, say to directly set a variable tot he output of a function.
+AWScript+ is a possible planned superset over AWScript, including the ability to pass arguments into functions and the ability to embed other instructions within instructions, say to directly set a variable tot he output of a function. And also may possibly include the ability to set a function to a certain shortcut, like so you can execute (funcName 10 20;)
