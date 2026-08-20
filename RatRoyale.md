@@ -11,10 +11,6 @@ AWScript's primary implementation is into Rat Royale.
 
 ## Primary _ Functions
 
-```Log``` - All arguments are converted into strings, variables are read, spaces are inserted between arguments, and its all appended to log file.
-
-```LogVerbatim``` - Same as log, but doesn't read variable values automatically
-
 ```ConsoleLog``` - Logs to Unity's console, not really useful except for devs
 
 ```ConnectToPlayerJoin``` - First argument is function name, second is it's locker name. Connects the function to player join events
@@ -24,6 +20,10 @@ AWScript's primary implementation is into Rat Royale.
 ```ConnectToPlayerDied``` - First argument is function name, second is it's locker name. Connects the function to player death events
 
 ## Generic _ Functions
+
+```Log``` - All arguments are converted into strings, variables are read, spaces are inserted between arguments, and its all appended to log file.
+
+```LogVerbatim``` - Same as log, but doesn't read variable values automatically
 
 ```Add``` - First argument is the output variable, all other arguments are numbers to be added
 
