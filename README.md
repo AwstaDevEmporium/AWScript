@@ -67,3 +67,6 @@ Then the locker destroyer:
 And finally one of the most important, the anchor destroyer:
 
 ```disavow @Anchor anchorName;```
+
+# The Future
+AWScript+ is a possible planned superset over AWScript, including the ability to pass arguments into functions and the ability to embed other instructions within instructions, say to directly set a variable tot he output of a function.
